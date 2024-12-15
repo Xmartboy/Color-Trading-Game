@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Trading Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .game-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+        }
+        .colors {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .color-btn {
+            padding: 20px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .timer {
+            font-size: 20px;
+            color: #555;
+            margin: 20px 0;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Color Trading Game</h1>
+
+        <div class="colors">
+            <button class="color-btn" style="background-color: red;" onclick="placeBet('red')">Red</button>
+            <button class="color-btn" style="background-color: blue;" onclick="placeBet('blue')">Blue</button>
+            <button class="color-btn" style="background-color: green;" onclick="placeBet('green')">Green</button>
+        </div>
+
+        <div class="timer">
+            Time Remaining: <span id="countdown">30</span> seconds
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        let countdown = 30;
+        let timer;
+        let bets = [];
+
+        // Start countdown timer
+        function startTimer() {
+            timer = setInterval(() => {
+                countdown--;
+                document.getElementById('countdown').innerText = countdown;
+
+                if (countdown === 0) {
+                    clearInterval(timer);
+                    declareWinner();
+                    resetGame();
+                }
+            }, 1000);
+        }
+
+        // Place a bet
+        function placeBet(color) {
+            bets.push(color);
+            document.getElementById('result').innerText = `You bet on ${color}!`;
+        }
+
+        // Declare winner
+        function declareWinner() {
+            const colors = ['red', 'blue', 'green'];
+            const winningColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const result = bets.includes(winningColor) ? `You win! The winning color is ${winningColor}.` : `You lose! The winning color is ${winningColor}.`;
+            document.getElementById('result').innerText = result;
+        }
+
+        // Reset game
+        function resetGame() {
+            countdown = 30;
+            bets = [];
+            setTimeout(() => {
+                document.getElementById('result').innerText = '';
+                startTimer();
+            }, 3000);
+        }
+
+        // Initialize game
+        startTimer();
+    </script>
+</body>
+</html>
